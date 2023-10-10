@@ -46,3 +46,14 @@ for (i in 1:29) {
   inert=t (centr/e)%*%poids%*%(centr/e)+inert
 }
 print(inert)
+
+Y=matrix(rep(0,21*3),21,3)
+a=0
+for (i in 1:21) {
+  if(appela[i]=="Saumur"){
+    Y[i,1]=1}
+  else if(appela[i]=="Bourgueuil"){
+    Y[i,2]=1}
+  else{Y[i,3]=1}
+}
+Y[1:8,1:3]#extrais de la matrice des appelatition
