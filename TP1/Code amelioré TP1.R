@@ -47,3 +47,74 @@ for (i in 1:21){
     else{Y[i,3]=1}
   }
 Y[1:8,1:3]#extrais de la matrice des appelatition
+#calcule de barycentre
+bar=rep(1:3)
+for (i in 1:3) {
+  bar[i]=sum(Y[,i])/sum(Y[,1:3])
+}
+bar#les baricentre de chaque modalité
+
+#calcule de la matrice des poids des appellations
+poids_ap=diag(bar)
+
+
+
+
+#PARTIE 2 TP1
+
+#On note:
+
+X=M_centr#la matrice centrée réduite des variables quantitatives
+Y=Y#la matrice des indicatrices d'appllatons
+
+sol=wine[,3]
+Z=matrix(rep(0,21*4),21,4)
+
+for (i in 1:21){
+  if(sol[i]=="Env1"){
+    Z[i,1]=1}
+  else if(sol[i]=="Env2"){
+    Z[i,2]=1}
+  else if(sol[i]=="Env4"){
+    Z[i,3]=1}
+  else {Z[i,4]=1}
+}
+Z[1:8,1:4]#extrais de la matrice des aindicatrices de la variable sol
+W=poids#la matrice des poids dans R^n
+
+M=matrix(rep(0,29*29),29,29)
+for (i in 1:29){
+    M[i,i]=1/29}#la matrice des poids dans R^p
+ 
+#1)_a.
+
+#_b.
+#calculons la projection sur Y et sur Z
+
+Q=solve(t(Y)%*%W%*%Y)
+G=solve(t(Z)%*%W%*%Z)
+T=Y%*%Q%*%t(Y)%*%W
+T[1:6,1:6]#extrait de la matrice de projection sur Y
+H=Z%*%G%*%t(Z)%*%W
+H[1:6,1:6]#extrait de la matrice de projection sur Z
+
+for (k in 1:3) {
+  Qk=solve(t(Y[,k])%*%W%*%Y[,k])
+  Tk=Y[,k]%*%Qk%*%t(Y[,k])%*%W
+  print(Tk[1:6,1:6])#extrait de la matrice de projection de xk
+  Tr=sum(diag(Tk%*%T))#la trace de la matrice Tk*T
+  print(Tr)}
+
+for (k in 1:4) {
+  Gk=solve(t(Z[,k])%*%W%*%Z[,k])
+  Hk=Z[,k]%*%Gk%*%t(Z[,k])%*%W
+  T_R=sum(diag(Hk%*%H))#la trace de la matrice Hk*H
+  print(T_R)
+}
+
+#_c)
+
+R=X%*%M%*%t(X)%*%W
+R[1:5,1:6]#extrait de la matrice R
+sum(diag(R%*%T))#la trace de la matrice R*T
+sum(diag(R%*%H))#la trace de la matrice R*H
